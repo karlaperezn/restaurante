@@ -15,7 +15,7 @@ let db;
 async function start() {
   try {
     const client = await MongoClient.connect(uri);
-    db = client.db("");
+    db = client.db("restaurante");
     console.log("Connected to MongoDB");
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   } catch (err) {
