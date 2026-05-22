@@ -1,19 +1,28 @@
-import e from "express";
-import { MongoClient } from "mongodb";
+import express from "express";
 import cors from "cors";
+import { MongoClient } from "mongodb";
 
-const app = e();
-
+const app = express();
 app.use(cors());
-app.use(e.urlencoded({ extended: false }));
-app.use(e.json());
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
-app.listen(process.env.PORT || 3000);
+const PORT = process.env.PORT || 3000;
 
-const url = "mongodb://admin:admin123@127.0.0.1:27017";
-const client = await MongoClient.connect(url);
-app.locals.db = client.db("hotel")
+let db;
 
+async function start() {
+  try {
+    const client = await MongoClient.connect(uri);
+    db = client.db("");
+    console.log("Connected to MongoDB");
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  } catch (err) {
+    console.error("Mongo error:", err);
+  }
+}
+start();
 
 //todos los menus
 app.get("/api/menus", async (req, res) => {
